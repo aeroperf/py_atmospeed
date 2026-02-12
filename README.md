@@ -105,7 +105,7 @@ There are three subcommands: `convert`, `pressure-alt`, and `batch`.
 
 ### Speed Conversions
 
-Convert a speed from one type to another at a given atmospheric condition.
+Convert a speed from one type to another at a given atmospheric condition. If `--to` is omitted, the speed is converted to all other types.
 
 **Required arguments:**
 
@@ -115,7 +115,23 @@ Convert a speed from one type to another at a given atmospheric condition.
 | `--temp` | Temperature (delta ISA by default) |
 | `--speed` | Speed value to convert |
 | `--from` | Input speed type: `cas`, `eas`, `tas`, or `mach` |
-| `--to` | Output speed type: `cas`, `eas`, `tas`, or `mach` |
+| `--to` | Output speed type: `cas`, `eas`, `tas`, or `mach` (optional — omit to convert to all) |
+
+**Example: CAS to all speed types**
+
+At 18,455 ft pressure altitude, ISA+13C, convert 255.6 KCAS to all other types:
+
+```bash
+uv run atmospeed convert --hp 18455 --temp 13 --speed 255.6 --from cas
+```
+
+Output:
+
+```
+251.1 kts EAS
+343.7 kts TAS
+0.5422 Mach
+```
 
 **Example: CAS to TAS**
 

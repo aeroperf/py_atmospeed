@@ -101,20 +101,26 @@ def _cmd_convert(args):
         print(f"a      = {atmo.speed_of_sound():.1f} kts")
         return
 
-    if args.speed is None or args.from_type is None or args.to_type is None:
-        print("Error: --speed, --from, and --to are required for speed conversion.",
+    if args.speed is None or args.from_type is None:
+        print("Error: --speed and --from are required for speed conversion.",
               file=sys.stderr)
         sys.exit(1)
 
     spd = Speed(args.speed, args.from_type, speed_unit=args.speed_unit)
     converters = {"cas": spd.to_cas, "eas": spd.to_eas,
                   "tas": spd.to_tas, "mach": spd.to_mach}
-    result = converters[args.to_type](atmo)
 
-    if args.to_type == "mach":
-        print(f"{result:.4f} Mach")
-    else:
-        print(f"{result:.1f} {args.speed_unit}")
+    targets = [args.to_type] if args.to_type else [
+        t for t in converters if t != args.from_type
+    ]
+
+    for target in targets:
+        result = converters[target](atmo)
+        label = f" {target.upper()}" if len(targets) > 1 else ""
+        if target == "mach":
+            print(f"{result:.4f} Mach")
+        else:
+            print(f"{result:.1f} {args.speed_unit}{label}")
 
 
 def _cmd_pressure_alt(args):

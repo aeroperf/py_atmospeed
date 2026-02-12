@@ -29,6 +29,16 @@ class TestCLIConvert:
         out = capsys.readouterr().out
         assert "Mach" in out
 
+    def test_convert_all(self, capsys):
+        main(["convert", "--hp", "18455", "--temp", "13",
+              "--speed", "255.6", "--from", "cas"])
+        out = capsys.readouterr().out
+        lines = out.strip().splitlines()
+        assert len(lines) == 3
+        assert "EAS" in lines[0]
+        assert "TAS" in lines[1]
+        assert "Mach" in lines[2]
+
 
 class TestCLIPressureAlt:
     def test_basic(self, capsys):
