@@ -126,7 +126,7 @@ class TestSpeedClassToTAS:
 
     def test_mach_to_tas_disa11f(self):
         spd = Speed(0.8474, "mach")
-        assert spd.to_tas(Atmo(hp=47854, temperature=11)) == pytest.approx(498.2, abs=0.1)
+        assert spd.to_tas(Atmo(hp=47854, temperature=11, temp_unit="F")) == pytest.approx(492.8, abs=0.1)
 
     def test_tas_to_tas_identity(self):
         spd = Speed(333.0, "tas", speed_unit="mph")
